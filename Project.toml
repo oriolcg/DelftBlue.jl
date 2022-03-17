@@ -1,0 +1,13 @@
+name = "DelftBlue"
+uuid = "ff5783a4-bdcd-4304-bc92-5622068bcc48"
+authors = ["Oriol Colomes <oriol.colomes@gmail.com>"]
+version = "0.1.0"
+
+[compat]
+julia = "1.6"
+
+[extras]
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[targets]
+test = ["Test"]
