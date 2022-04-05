@@ -23,6 +23,8 @@ export JULIA_PETSC_LIBRARY="/home/ocolomesgene/progs/install/petsc/3.15.4/lib"
 # See https://juliaparallel.github.io/MPI.jl/latest/knownissues/#Julia-module-precompilation-1
 # for a justification of this line
 
+echo 'Resolving versions'
+julia --project=../ --color=yes -e 'using Pkg; Pkg.resolve()'
 echo 'Instantiating'
 julia --project=../ --color=yes -e 'using Pkg; Pkg.instantiate()'
 echo 'Precompiling'
