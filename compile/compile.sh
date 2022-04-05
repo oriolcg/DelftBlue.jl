@@ -16,8 +16,8 @@ module load julia
 module load openmpi/4.1.1-urzuzcv
 
 
-export JULIA_MPI_BINARY = /mnt/shared/apps/2022r1/compute/linux-rhel8-skylake_avx512/gcc-8.5.0/openmpi-4.1.1-urzuzcvzrdedifi3mm527t4wgiisuvld/bin
-export JULIA_PETSC_LIBRARY = /home/ocolomesgene/progs/install/petsc/3.15.4/lib
+export JULIA_MPI_BINARY="/mnt/shared/apps/2022r1/compute/linux-rhel8-skylake_avx512/gcc-8.5.0/openmpi-4.1.1-urzuzcvzrdedifi3mm527t4wgiisuvld/bin"
+export JULIA_PETSC_LIBRARY="/home/ocolomesgene/progs/install/petsc/3.15.4/lib"
 
 echo 'Compiling'
 # This script is to be executed from this folder (compile/)
