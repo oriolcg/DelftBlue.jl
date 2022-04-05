@@ -160,9 +160,9 @@ version = "0.17.11"
 
 [[GridapDistributed]]
 deps = ["FillArrays", "Gridap", "LinearAlgebra", "MPI", "PartitionedArrays", "SparseArrays", "SparseMatricesCSR", "WriteVTK"]
-git-tree-sha1 = "087cbdab3dff32d97be1596b9b9599f17de62a1e"
-repo-rev = "TransientDistributedCellField"
-repo-url = "https://github.com/oriolcg/GridapDistributed.jl"
+git-tree-sha1 = "7b68150aad47eee2ba50d0d50f8df5751efd59b9"
+repo-rev = "master"
+repo-url = "https://github.com/gridap/GridapDistributed.jl.git"
 uuid = "f9701e48-63b3-45aa-9a63-9bc6c271f355"
 version = "0.2.5"
 
