@@ -16,7 +16,9 @@ module load julia
 module load openmpi/4.1.1-urzuzcv
 
 
-export JULIA_MPI_BINARY="/mnt/shared/apps/2022r1/compute/linux-rhel8-skylake_avx512/gcc-8.5.0/openmpi-4.1.1-urzuzcvzrdedifi3mm527t4wgiisuvld/bin"
+export JULIA_MPI_BINARY="system"
+export JULIA_MPI_PATH="/mnt/shared/apps/2022r1/compute/linux-rhel8-skylake_avx512/gcc-8.5.0/openmpi-4.1.1-urzuzcvzrdedifi3mm527t4wgiisuvld"
+export JULIA_MPIEXEC="srun"
 export JULIA_PETSC_LIBRARY="/home/ocolomesgene/progs/install/petsc/3.15.4/lib"
 
 # This script is to be executed from this folder (compile/)
@@ -27,6 +29,8 @@ echo 'Resolving versions'
 julia --project=../ --color=yes -e 'using Pkg; Pkg.resolve()'
 echo 'Instantiating'
 julia --project=../ --color=yes -e 'using Pkg; Pkg.instantiate()'
+echo 'Building MPI'
+julia --project=../ --color=yes -e 'using Pkg; Pkg.build("MPI")'
 echo 'Precompiling'
 julia --project=../ --color=yes -e 'using Pkg; Pkg.precompile()'
 echo 'Compiling'
