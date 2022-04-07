@@ -1,23 +1,12 @@
 #!/bin/bash
 
-#SBATCH --partition=compute
-#SBATCH --qos=short
-#SBATCH --time=01:00:00
-#SBATCH --nodes=1
-#SBATCH --ntasks=1
-#SBATCH --cpus-per-task=1
-#SBATCH --mem-per-cpu=1024
-#SBATCH --hint=compute_bound
-
 module use /mnt/shared/apps/modulefiles
 module load 2022r1
 module load compute
-module load julia
-module load openmpi/4.1.1-urzuzcv
-
+module load openmpi/gcc/64/1.10.7
 
 export JULIA_MPI_BINARY="system"
-export JULIA_MPI_PATH="/mnt/shared/apps/2022r1/compute/linux-rhel8-skylake_avx512/gcc-8.5.0/openmpi-4.1.1-urzuzcvzrdedifi3mm527t4wgiisuvld"
+export JULIA_MPI_PATH="/cm/shared/apps/openmpi/gcc/64/1.10.7"
 export JULIA_MPIEXEC="srun"
 export JULIA_PETSC_LIBRARY="/home/ocolomesgene/progs/install/petsc/3.15.4/lib"
 
@@ -26,14 +15,14 @@ export JULIA_PETSC_LIBRARY="/home/ocolomesgene/progs/install/petsc/3.15.4/lib"
 # for a justification of this line
 
 echo 'Resolving versions'
-julia --project=../ --color=yes -e 'using Pkg; Pkg.resolve()'
+$HOME/progs/install/julia/1.7.2/bin/julia --project=../ --color=yes -e 'using Pkg; Pkg.resolve()'
 echo 'Instantiating'
-julia --project=../ --color=yes -e 'using Pkg; Pkg.instantiate()'
+$HOME/progs/install/julia/1.7.2/bin/julia --project=../ --color=yes -e 'using Pkg; Pkg.instantiate()'
 echo 'Building MPI'
-julia --project=../ --color=yes -e 'using Pkg; Pkg.build("MPI")'
+$HOME/progs/install/julia/1.7.2/bin/julia --project=../ --color=yes -e 'using Pkg; Pkg.build("MPI")'
 echo 'Precompiling'
-julia --project=../ --color=yes -e 'using Pkg; Pkg.precompile()'
+$HOME/progs/install/julia/1.7.2/bin/julia --project=../ --color=yes -e 'using Pkg; Pkg.precompile()'
 echo 'Compiling'
-julia --project=../ -O3 --check-bounds=no --color=yes compile.jl
+$HOME/progs/install/julia/1.7.2/bin/julia --project=../ -O3 --check-bounds=no --color=yes compile.jl
 
 echo 'end'

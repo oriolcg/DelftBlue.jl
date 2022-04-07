@@ -2,7 +2,7 @@ module use /mnt/shared/apps/modulefiles
 module load 2022r1
 module load compute
 module load cmake
-module load openmpi
+module load openmpi/gcc/64/1.10.7
 module load blas/gcc/64/3.8.0
 module load lapack/gcc/64/3.9.0
 
