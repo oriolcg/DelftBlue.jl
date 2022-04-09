@@ -13,5 +13,11 @@ module load 2022r1
 module load compute
 module load openmpi/gcc/64/1.10.7
 
+export JULIA_MPI_BINARY="system"
+export JULIA_MPI_PATH="/cm/shared/apps/openmpi/gcc/64/1.10.7"
+
+$HOME/progs/install/julia/1.7.2/bin/julia --project=../ -e 'using Pkg; Pkg.instantiate();'
+$HOME/progs/install/julia/1.7.2/bin/julia --project=../ -e 'using Pkg; Pkg.precompile();'
+
 srun -n 8 $HOME/progs/install/julia/1.7.2/bin/julia --project=../ -J ../DelftBlue.so -O3 --check-bounds=no\
      -e 'using DelftBlue; DelftBlue.main(16,2,2)'
