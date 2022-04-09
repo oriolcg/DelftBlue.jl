@@ -79,7 +79,8 @@ function run_TGV(parts,n::Int,order::Int)
 
   # Transient solver
   xₕ₀ = interpolate([u₀,p₀],X(0.0))
-  nls = PETScNonlinearSolver()
+  nls = NLSolver(ls,show_trace=true,method=:newton,iterations=10)
+  #nls = PETScNonlinearSolver()
   ode_solver = ThetaMethod(nls,0.001,0.5)
 
   # Solution (lazy)
@@ -99,9 +100,9 @@ function run_TGV(parts,n::Int,order::Int)
       push!(K,0.5*(∑(∫(uₕ⋅uₕ)dΩ))/(2π^3))
       push!(E,ν*(∑(∫(ωₕ⋅ωₕ)dΩ))/(2π^3))
       push!(T,t)
-      println("updating global variables") 
-#      uₙₕ = interpolate!(uₕ,fv_u,U(t))
-#      ηₙₕ = solve(ls,op_proj)
+      println("updating global variables")
+      uₙₕ = interpolate!(uₕ,fv_u,U(t))
+      ηₙₕ = solve(ls,op_proj)
       pvd[t] = createvtk(Ω,"results/TGV_$t";cellfields=["u"=>uₕ,"p"=>pₕ,"eta"=>ηₙₕ,"w"=>ωₕ],nsubcells=10)
       println("End of time: $t")
     end
