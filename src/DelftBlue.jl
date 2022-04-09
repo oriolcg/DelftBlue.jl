@@ -11,7 +11,7 @@ using GridapPETSc: PETSC
 
 function main(n::Int,order::Int,np::Int)
   prun(mpi,(np,np,np)) do parts
-    options = "-snes_type newtonls -snes_linesearch_type basic  -snes_linesearch_damping 1.0 -snes_rtol 1.0e-14 -snes_atol 0.0 -snes_monitor -ksp_error_if_not_converged true -ksp_converged_reason -ksp_type preonly -pc_type lu -pc_factor_mat_solver_type mumps"
+    options = "-snes_type newtonls -snes_linesearch_type basic  -snes_linesearch_damping 1.0 -snes_rtol 1.0e-12 -snes_atol 0.0 -snes_monitor -ksp_error_if_not_converged true -ksp_converged_reason -ksp_type preonly -pc_type lu -pc_factor_mat_solver_type mumps"
     GridapPETSc.with(args=split(options)) do
       run_TGV(parts,n,order)
     end
@@ -92,15 +92,18 @@ function run_TGV(parts,n::Int,order::Int)
   # Iterate over steps
   createpvd(parts,"results/TGV") do pvd
     for (xₕ,t) in xₕₜ
-      println("Time: $t")
+      println("--------------------")
+      println("Start of time: $t")
       uₕ,pₕ=xₕ
       ωₕ = ∇×uₕ
       push!(K,0.5*(∑(∫(uₕ⋅uₕ)dΩ))/(2π^3))
       push!(E,ν*(∑(∫(ωₕ⋅ωₕ)dΩ))/(2π^3))
       push!(T,t)
-      uₙₕ = interpolate!(uₕ,fv_u,U(t))
-      ηₙₕ = solve(ls,op_proj)
+      println("updating global variables") 
+#      uₙₕ = interpolate!(uₕ,fv_u,U(t))
+#      ηₙₕ = solve(ls,op_proj)
       pvd[t] = createvtk(Ω,"results/TGV_$t";cellfields=["u"=>uₕ,"p"=>pₕ,"eta"=>ηₙₕ,"w"=>ωₕ],nsubcells=10)
+      println("End of time: $t")
     end
  end
 
