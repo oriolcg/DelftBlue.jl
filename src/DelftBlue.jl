@@ -9,20 +9,20 @@ using LineSearches: BackTracking
 using GridapPETSc
 using GridapPETSc: PETSC
 
-function main(n::Int,order::Int,np::Int)
+function main(n::Int,order::Int,np::Int,dt::Real,tf::Real)
   prun(mpi,(np,np,np)) do parts
     options = "-snes_type newtonls -snes_linesearch_type basic  -snes_linesearch_damping 1.0 -snes_rtol 1.0e-12 -snes_atol 0.0 -snes_monitor -ksp_error_if_not_converged true -ksp_converged_reason -ksp_type preonly -pc_type lu -pc_factor_mat_solver_type mumps"
     GridapPETSc.with(args=split(options)) do
-      run_TGV(parts,n,order)
+      run_TGV(parts,n,order,dt,tf)
     end
   end
 end
 
-function run_TGV(parts,n::Int,order::Int)
+function run_TGV(parts,n::Int,order::Int,dt::Real,tf::Real)
 
   # Parameters
   L = 2π
-  Re = 100.0
+  Re = 800.0
   ν = 1/Re
 
   # TGV initial solution
@@ -81,10 +81,10 @@ function run_TGV(parts,n::Int,order::Int)
   xₕ₀ = interpolate([u₀,p₀],X(0.0))
   nls = NLSolver(ls,show_trace=true,method=:newton,iterations=10)
   #nls = PETScNonlinearSolver()
-  ode_solver = ThetaMethod(nls,0.001,0.5)
+  ode_solver = ThetaMethod(nls,dt,0.5)
 
   # Solution (lazy)
-  xₕₜ = solve(ode_solver,op,xₕ₀,0,0.002)
+  xₕₜ = solve(ode_solver,op,xₕ₀,0,tf)
 
   K = Float64[]
   E = Float64[]
