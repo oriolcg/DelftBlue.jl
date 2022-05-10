@@ -70,7 +70,7 @@ function run_Cylinder(parts,order::Int,dt::Real,tf::Real)
   # Orthogonal projection
   a(η,κ) = ∫( τₘ*(η⋅κ) )dΩ
   b(κ) = ∫( τₘ*((∇(uₙₕ)'⋅uₙₕ)⋅κ) )dΩ
-  op_proj = AffineFEOperator(a,b,U,V)
+  op_proj(t) = AffineFEOperator(a,b,U(t),V)
 
   # Linear Solver
   ls = PETScLinearSolver()
@@ -97,7 +97,7 @@ function run_Cylinder(parts,order::Int,dt::Real,tf::Real)
       uₕ,pₕ=xₕ
       println("updating global variables")
       uₙₕ = interpolate!(uₕ,fv_u,U(t))
-      ηₙₕ = solve(ls,op_proj)
+      ηₙₕ = solve(ls,op_proj(t))
       pvd[t] = createvtk(Ω,"results/Cylinder_$t";cellfields=["u"=>uₕ,"p"=>pₕ,"eta"=>ηₙₕ],nsubcells=10)
       println("End of time: $t")
     end
