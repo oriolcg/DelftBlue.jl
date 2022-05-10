@@ -14,7 +14,7 @@ function run_Cylinder(parts,order::Int,dt::Real,tf::Real)
   u₀(t) = x->u₀(x,t)
 
   # Discretization
-  models_path=ENV["DEFLTBLUE_MODELS"]
+  models_path=ENV["DELFTBLUE_MODELS"]
   meshfile = joinpath(models_path,"mesh.msh")
   𝒯 = GmshDiscreteModel(parts,meshfile)
 
