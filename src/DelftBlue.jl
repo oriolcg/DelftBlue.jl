@@ -2,6 +2,7 @@ module DelftBlue
 
 using Gridap
 using GridapDistributed
+using GridapGmsh
 using PartitionedArrays
 using Gridap.FESpaces: zero_free_values, interpolate!
 using Gridap.Fields: meas
