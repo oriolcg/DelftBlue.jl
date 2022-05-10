@@ -2,6 +2,7 @@ function run_Cylinder(parts,order::Int,dt::Real,tf::Real)
 
   # Parameters
   D = 0.1
+  Re = 100
   ν = D/Re
   Uₘ = 1.5
   H = 0.41
