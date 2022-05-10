@@ -21,7 +21,7 @@ function run_Cylinder(parts,order::Int,dt::Real,tf::Real)
   # Triangulation and Integration measure
   Ω = Interior(𝒯)
   dΩ = Measure(Ω,2*order)
-  Γ = Boundary(Ω,tags=["sides"])
+  Γ = Boundary(𝒯,tags=["sides"])
   dΓ = Measure(Γ,2*order)
   nΓ = get_normal_vector(Γ)
 
