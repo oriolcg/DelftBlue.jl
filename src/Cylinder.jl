@@ -63,7 +63,7 @@ function run_Cylinder(parts,order::Int,dt::Real,tf::Real)
 
   # Stokes Weake form
   a₀((u,p),(v,q)) = ∫( ν*(∇(u)⊙∇(v)) - p*(∇⋅v) + (∇⋅u)*q )dΩ +
-                    ∫( - (ν*(∇(u)⋅nΓ) - p*nΓ) ⋅ (v⋅nΓ) - (ν*(∇(v)⋅nΓ) - q*nΓ) ⋅ (u⋅nΓ) + κ*(u⋅nΓ)*(v⋅nΓ) )dΓ
+                    ∫( - ((ν*(∇(u)⋅nΓ) - p*nΓ)⋅nΓ) ⋅ (v⋅nΓ) - ((ν*(∇(v)⋅nΓ) - q*nΓ)⋅nΓ) ⋅ (u⋅nΓ) + κ*(u⋅nΓ)*(v⋅nΓ) )dΓ
   l₀((v,q)) =  ∫( 0.0*q )dΩ
   op₀ = AffineFEOperator(a₀,l₀,X(0.0),Y)
 
