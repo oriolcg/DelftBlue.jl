@@ -14,7 +14,8 @@ function run_Cylinder(parts,order::Int,dt::Real,tf::Real)
   u₀(t) = x->u₀(x,t)
 
   # Discretization
-  𝒯 = GmshDiscreteModel(parts,"models/mesh.msh")
+  meshfile = joinpath(pkdir(@__MODULE__),"models/mesh.msh")
+  𝒯 = GmshDiscreteModel(parts,meshfile)
 
   # Triangulation and Integration measure
   Ω = Interior(𝒯)
