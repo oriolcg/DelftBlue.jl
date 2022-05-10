@@ -83,7 +83,7 @@ function run_Cylinder(parts,order::Int,dt::Real,tf::Real)
   ode_solver = GeneralizedAlpha(nls,dt,0.0)
 
   # Initial solution
-  xₕ₀ = solve(ls,op)
+  xₕ₀ = solve(ls,op₀)
   vₕ₀ = interpolate_everywhere([VectorValue(0.0,0.0,0.0),0.0],X(0.0))
 
   # Solution (lazy)
