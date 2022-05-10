@@ -53,11 +53,11 @@ function run_Cylinder(parts,order::Int,dt::Real,tf::Real)
   c(a,u,v) = 0.5*((∇(u)'⋅a)⋅v - u⋅(∇(v)'⋅a))
   res(t,(u,p),(v,q)) = ∫( ∂t(u)⋅v  + c(u,u,v) + ν*(∇(u)⊙∇(v)) - p*(∇⋅v) + (∇⋅u)*q +
                           τₘ*((∇(u)'⋅u - ηₙₕ)⋅(∇(v)'⋅u)) + τc*((∇⋅u)*(∇⋅v)) )dΩ +
-                       ∫( - (ν*(∇(u)⋅nΓ) - p*nΓ) ⋅ (v⋅nΓ) - (ν*(∇(v)⋅nΓ) - q*nΓ) ⋅ (u⋅nΓ) + κ*(u⋅nΓ)*(v⋅nΓ) )dΓ
+                       ∫( - ((ν*(∇(u)⋅nΓ) - p*nΓ)⋅nΓ) ⋅ (v⋅nΓ) - ((ν*(∇(v)⋅nΓ) - q*nΓ)⋅nΓ) ⋅ (u⋅nΓ) + κ*(u⋅nΓ)*(v⋅nΓ) )dΓ
   jac(t,(u,p),(du,dp),(v,q)) = ∫( c(du,u,v) + c(u,du,v) + ν*(∇(du)⊙∇(v)) - dp*(∇⋅v) + (∇⋅du)*q +
                                   τₘ*((∇(u)'⋅u - ηₙₕ)⋅(∇(v)'⋅du) + (∇(du)'⋅u + ∇(u)'⋅du)⋅(∇(v)'⋅u)) +
                                   τc*((∇⋅du)*(∇⋅v)) )dΩ+
-                               ∫( - (ν*(∇(du)⋅nΓ) - dp*nΓ) ⋅ (v⋅nΓ) - (ν*(∇(v)⋅nΓ) - q*nΓ) ⋅ (du⋅nΓ) + κ*(du⋅nΓ)*(v⋅nΓ) )dΓ
+                               ∫( - ((ν*(∇(du)⋅nΓ) - dp*nΓ)⋅nΓ) ⋅ (v⋅nΓ) - ((ν*(∇(v)⋅nΓ) - q*nΓ)⋅nΓ) ⋅ (du⋅nΓ) + κ*(du⋅nΓ)*(v⋅nΓ) )dΓ
   jac_t(t,(u,p),(dut,dpt),(v,q)) = ∫( dut⋅v )dΩ
   op = TransientFEOperator(res,jac,jac_t,X,Y)
 
