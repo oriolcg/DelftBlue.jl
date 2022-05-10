@@ -37,14 +37,14 @@ function run_Cylinder(parts,order::Int,dt::Real,tf::Real)
 
   # Explicit FE functions
   global ηₙₕ = interpolate_everywhere(VectorValue(0.0,0.0,0.0),U(0.0))
-  global uₙₕ = interpolate_everywhere(u₀,U(0.0))
+  global uₙₕ = interpolate_everywhere(u₀(0.0),U(0.0))
   global fv_u = zero_free_values(U(0.0))
 
   # Stabilization Parameters
   c₁ = 12.0
   c₂ = 2.0
   cc = 4.0
-  h = lazy_map(h->h^(1/3),get_cell_measure(Ω))
+  h = 0.01 # lazy_map(h->h^(1/3),get_cell_measure(Ω))
   τₘ = 1/(c₁*ν/h^2 + c₂*(meas∘uₙₕ)/h)
   τc = cc *(h^2/(c₁*τₘ))
   κ = 10.0*order*(order-1)/h
