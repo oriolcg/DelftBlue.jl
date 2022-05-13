@@ -44,10 +44,9 @@ function run_Cylinder(parts,order::Int,dt::Real,tf::Real)
   c₁ = 12.0
   c₂ = 2.0
   cc = 4.0
-  cell_measures = map_parts(Ω.trians) do trian
-    get_cell_measure(trian)
+  h = map_parts(Ω.trians) do trian
+    lazy_map(h->h^(1/3),get_cell_measure(trian))
   end
-  h = lazy_map(h->h^(1/3),cell_measures)
   τₘ = 1/(c₁*ν/h^2 + c₂*(meas∘uₙₕ)/h)
   τc = cc *(h^2/(c₁*τₘ))
   κ = 10.0*order*(order-1)/h
