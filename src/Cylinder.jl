@@ -47,9 +47,9 @@ function run_Cylinder(parts,order::Int,dt::Real,tf::Real)
   h = map_parts(Ω.trians) do trian
     lazy_map(h->h^(1/3),get_cell_measure(trian))
   end
-  τₘ = 1/(c₁*ν/h^2 + c₂*(meas∘uₙₕ)/h)
-  τc = cc *(h^2/(c₁*τₘ))
-  κ = 10.0*order*(order-1)/h
+  τₘ = 1/(c₁*ν/h.^2 + c₂*(meas∘uₙₕ)./h)
+  τc = cc *(h.^2/(c₁*τₘ))
+  κ = 10.0*order*(order-1)./h
 
   # Weak form
   c(a,u,v) = 0.5*((∇(u)'⋅a)⋅v - u⋅(∇(v)'⋅a))
