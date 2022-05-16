@@ -77,7 +77,7 @@ function run_Cylinder(parts,order::Int,dt::Real,tf::Real,mesh_file::String)
   op_proj(t) = AffineFEOperator(a,b,U(t),V)
 
   # Linear Solver
-  ls = PETScLinearSolver()
+  ls = LUSolver()#PETScLinearSolver()
 
   # Nonlinear Solver
   nls = NLSolver(ls,show_trace=true,method=:newton,iterations=10)
@@ -88,7 +88,10 @@ function run_Cylinder(parts,order::Int,dt::Real,tf::Real,mesh_file::String)
 
   # Initial solution
   xₕ₀ = solve(ls,op₀)
-  vₕ₀ = interpolate_everywhere([VectorValue(0.0,0.0,0.0),0.0],X(0.0))
+  #vₕ₀ = interpolate_everywhere([VectorValue(0.0,0.0,0.0),0.0],X(0.0))
+  du₀ = interpolate_everywhere(VectorValue(0.0,0.0,0.0),U(0.0))
+  dp₀ = interpolate_everywhere(0.0,P)
+  vₕ₀ = interpolate_everywhere([du₀,dp₀],X(0.0))
 
   # Solution (lazy)
   xₕₜ = solve(ode_solver,op,(xₕ₀,vₕ₀),0,tf)
