@@ -76,8 +76,27 @@ function run_Cylinder(parts,order::Int,dt::Real,tf::Real,mesh_file::String)
   b(κ) = ∫( τₘ*((∇(uₙₕ)'⋅uₙₕ)⋅κ) )dΩ
   op_proj(t) = AffineFEOperator(a,b,U(t),V)
 
-  # Linear Solver
-  ls = LUSolver()#PETScLinearSolver()
+
+  # Setup solver via low level PETSC API calls
+  function mykspsetup(ksp)
+    pc       = Ref{GridapPETSc.PETSC.PC}()
+    mumpsmat = Ref{GridapPETSc.PETSC.Mat}()
+    @check_error_code GridapPETSc.PETSC.KSPSetType(ksp[],GridapPETSc.PETSC.KSPPREONLY)
+    @check_error_code GridapPETSc.PETSC.KSPGetPC(ksp[],pc)
+    @check_error_code GridapPETSc.PETSC.PCSetType(pc[],GridapPETSc.PETSC.PCLU)
+    @check_error_code GridapPETSc.PETSC.PCFactorSetMatSolverType(pc[],GridapPETSc.PETSC.MATSOLVERMUMPS)
+    @check_error_code GridapPETSc.PETSC.PCFactorSetUpMatSolverType(pc[])
+    @check_error_code GridapPETSc.PETSC.PCFactorGetMatrix(pc[],mumpsmat)
+    @check_error_code GridapPETSc.PETSC.MatMumpsSetIcntl(mumpsmat[],  4, 2)
+    @check_error_code GridapPETSc.PETSC.MatMumpsSetIcntl(mumpsmat[], 28, 2)
+    @check_error_code GridapPETSc.PETSC.MatMumpsSetIcntl(mumpsmat[], 29, 2)
+    @check_error_code GridapPETSc.PETSC.MatMumpsSetCntl(mumpsmat[], 3, 1.0e-6)
+    @check_error_code GridapPETSc.PETSC.KSPSetFromOptions(ksp[])
+  end
+
+   # Linear Solver
+   ls₀ = PETScLinearSolver(mykspsetup)
+   ls = PETScLinearSolver()
 
   # Nonlinear Solver
   nls = NLSolver(ls,show_trace=true,method=:newton,iterations=10)
@@ -87,7 +106,7 @@ function run_Cylinder(parts,order::Int,dt::Real,tf::Real,mesh_file::String)
   ode_solver = GeneralizedAlpha(nls,dt,0.0)
 
   # Initial solution
-  xₕ₀ = solve(ls,op₀)
+  xₕ₀ = solve(ls₀,op₀)
   #vₕ₀ = interpolate_everywhere([VectorValue(0.0,0.0,0.0),0.0],X(0.0))
   du₀ = interpolate_everywhere(VectorValue(0.0,0.0,0.0),U(0.0))
   dp₀ = interpolate_everywhere(0.0,P)
