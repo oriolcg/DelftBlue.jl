@@ -1,4 +1,4 @@
-function run_Cylinder(parts,order::Int,dt::Real,tf::Real)
+function run_Cylinder(parts,order::Int,dt::Real,tf::Real,mesh_file::String)
 
   # Parameters
   D = 0.1
@@ -15,7 +15,7 @@ function run_Cylinder(parts,order::Int,dt::Real,tf::Real)
 
   # Discretization
   models_path=ENV["DELFTBLUE_MODELS"]
-  meshfile = joinpath(models_path,"mesh.msh")
+  meshfile = joinpath(models_path,mesh_file)
   𝒯 = GmshDiscreteModel(parts,meshfile)
 
   # Triangulation and Integration measure
