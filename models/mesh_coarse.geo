@@ -2,13 +2,13 @@
 SetFactory("OpenCASCADE");
 // [VARIABLES]
 // settings for number of mesh points per line
-Nx1 = 5; Rx1 = 1.00;		// line segment x: 0.295 to 0.705
-Nx2 = 5; Rx2 = 1.00;		// line segment x: 0.705 to 2.5
-Nx3 = 5; Rx3 = 1.00;		// line segment x: 0 to 0.295
-Ny1 = 5; Ry1 = 1.00;		// line segment y: 0 to 0.41
-Ni  = 5; Ri  = 0.96;		// line segment 4 diagonal lines to cylinder
-Nc  = 5; Rc  = 1.00;		// line segment 4 sections of cylinder
-Nz1 = 5;			// z direction mesh points
+Nx1 = 4; Rx1 = 1.00;		// line segment x: 0.295 to 0.705
+Nx2 = 4; Rx2 = 1.00;		// line segment x: 0.705 to 2.5
+Nx3 = 4; Rx3 = 1.00;		// line segment x: 0 to 0.295
+Ny1 = 4; Ry1 = 1.00;		// line segment y: 0 to 0.41
+Ni  = 4; Ri  = 0.96;		// line segment 4 diagonal lines to cylinder
+Nc  = 4; Rc  = 1.00;		// line segment 4 sections of cylinder
+Nz1 = 4;			// z direction mesh points
 
 // [POINTS]
 // 4 points x line: y=0
